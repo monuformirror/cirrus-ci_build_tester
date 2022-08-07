@@ -1,23 +1,45 @@
 env:
     CIRRUS_CLONE_DEPTH: 1
+    BUILD_HOSTNAME: "CirrusCI"
     CIRRUS_WORKING_DIR: "/tmp/ci"
-    #15
+    
 task:
-    name: Monu
-    timeout_in: 120m
-    container:
-      image: anggit86/ubuntu:21.10
-      cpu: 8
-      memory: 32g
-      commands:
-      - sudo apt-get install gpg
-      - sudo apt-get update
-      - sudo apt-get upgrade
-    download_ccache_background_script: # To download ccache in background
-      - bash download_ccache # Ccache download script
-    sync_script: # To sync rom source and dt, vt, kernel etc.
-      - bash sync # Sync script
-    build_script: # To build rom
-      - bash build # Rom build script
-    upload_ccache_script: # Upload ccache to cloud foreground
-      - bash upload_ccache # Ccache uploading script
+  name: Monu
+  timeout_in: 260m
+  container:
+    image: apon77/aosp:cirrus
+    cpu: 8
+    memory: 32G
+
+  install_script:
+    - sudo apt-get update
+    - sudo apt-get install -yq neofetch wget
+    - neofetch
+    - mkdir /home/cirrus/ccache
+    - mkdir /home/cirrus/roms
+
+  sync_script:
+    - export CCACHE_DIR=~/ccache/
+    - export CCACHE_EXEC=$(which ccache)
+    - export USE_CCACHE=1
+    - ccache -M 8G
+    - ccache -z
+    - cd /home/cirrus/roms
+    - mkdir rice
+    - cd rice
+    - git config --global user.email "sunil9802506051@gmail.com"
+    - git config --global user.name "monu70152"
+    - git config --global color.ui true
+    - repo init --depth=1 --no-repo-verify -u https://github.com/RiceDroid/android -b twelve -g default,-mips,-darwin,-notdefault
+    - wget -O - https://raw.githubusercontent.com/monu70152/cirrus-ci_build_tester/new/sync | bash
+    - repo sync -c --no-clone-bundle --no-tags --optimized-fetch --prune --force-sync -j8
+    - ls -la
+
+  build_script:
+    - cd /home/cirrus/roms/rice
+    - . build/envsetup.sh
+    - export TZ=Asia/Delhi
+    - branch veux
+    - ls -la $OUT_DIR
+    - ls -la
+    - echo $OUT_DIR
