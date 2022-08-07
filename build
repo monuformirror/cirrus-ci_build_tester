@@ -3,7 +3,6 @@ cd /tmp/rom
 
 # Normal build steps
 . build/envsetup.sh
-lunch aosp_veux-userdebug
 export CCACHE_DIR=/tmp/ccache
 export CCACHE_EXEC=$(which ccache)
 export USE_CCACHE=1
@@ -42,7 +41,7 @@ tg(){
 id=-1001429926659
 
 # compile plox
-make bacon -j8 &
+brunch veux
 sleep 185m
 kill %1
 
