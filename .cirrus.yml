@@ -1,12 +1,12 @@
 env:
     CIRRUS_CLONE_DEPTH: 1
     CIRRUS_WORKING_DIR: "/tmp/ci"
-    #14
+    #15
 task:
     name: Monu
     timeout_in: 120m
     container:
-      image: inok2341/anu:latest
+      image: anggit86/ubuntu:21.10
       cpu: 8
       memory: 32g
       commands:
