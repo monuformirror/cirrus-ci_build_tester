@@ -1,17 +1,13 @@
 task:
-
-  name: "Firmware Dump "
-
-  only_if: $CIRRUS_REPO_OWNER == 'Monu'
-
-  skip: $CIRRUS_BRANCH == 'main'
-
+  name: "Firmware Dump by Dumpr"
+  only_if: $CIRRUS_REPO_OWNER == 'Dumpr'
+  skip: $CIRRUS_BRANCH == 'new'
   auto_cancellation: $CIRRUS_BRANCH == 'autocancel'
   timeout_in: 120m
   container:
       image: ghcr.io/sushrut1101/docker:arch
-      cpu: 8
-      memory: 32G
+      cpu: 4
+      memory: 16G
 
   Clone_script:
       - git clone --depth=1 --single-branch https://github.com/DumprX/DumprX.git
