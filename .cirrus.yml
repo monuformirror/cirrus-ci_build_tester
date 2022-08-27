@@ -11,6 +11,11 @@ task:
 
   Clone_script:
       - git clone --depth=1 --single-branch https://github.com/DumprX/DumprX.git
+  Setup_script:
+      - git config --global user.name "monuformirror"
+      - git config --global user.email "EMILIA.WATERS@student.csn.edu"
+      - cd DumprX
+      - sudo bash setup.sh
   DumprX_script:
       - cd DumprX || echo "Already in the Directory"
       - ./dumper.sh $(< ${CIRRUS_WORKING_DIR}/ROM_URL.txt
